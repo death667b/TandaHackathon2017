@@ -1,0 +1,21 @@
+{
+    "hook_id": 38752,
+    "hook_key": "46c42116-7253-4468-9d02-73decb0ece79",
+    "hook_time": 1509160821,
+    "hook_signature": "X-Webhook-Signature",
+    "payload": {
+        "topic": "leaverequest.created",
+        "body": {
+            "id": 6407363,
+            "user_id": 450394,
+            "reason": null,
+            "leave_type": "Party Time",
+            "hours": 7.0,
+            "start": "2017-11-19",
+            "finish": "2017-11-19",
+            "status": "pending",
+            "multitagging": false,
+            "updated_at": 1509160821
+        }
+    }
+}

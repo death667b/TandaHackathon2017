@@ -73,46 +73,71 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _stringify = __webpack_require__(1);
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 exports.main = main;
 
-var _uuid = __webpack_require__(1);
+var _uuid = __webpack_require__(2);
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
-var _awsSdk = __webpack_require__(2);
+var _awsSdk = __webpack_require__(3);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _twilio = __webpack_require__(3);
+var _requestPromise = __webpack_require__(4);
 
-var _twilio2 = _interopRequireDefault(_twilio);
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _awsSdk2.default.config.update({ region: "ap-southeast-2" });
 
-var accountID = 'AC1d5cf343f82ccd0c15e44feb15fa6dcc';
-var accountAuth = 'afa732887930ef637618e340063d2030';
-
-var client = new _twilio2.default(accountID, accountAuth);
-
 function main(event, context, callback) {
-    var eventBody = JSON.parse(event.body).payload.body;
+    var eventBody = event.payload.body;
+    var date = new Date();
+    var startDate = date.getYear() - 100 + '-' + date.getMonth() + '-' + date.getDate();
+    var endDate = date.getYear() - 100 + 1 + '-' + date.getMonth() + '-' + date.getDate();
 
-    var twilioPhone = eventBody.phone.replace(/ /g, "").replace("0", "+61");
-    var passcode = eventBody.passcode;
-    var name = eventBody.name;
+    var rpOptions = {
+        uri: 'https://my.tanda.co/api/v2/leave',
+        qs: {
+            'from': startDate.toString(),
+            'to': endDate.toString()
+        },
+        headers: {
+            'Authorization': 'Bearer 0f9ea1cdbab7ff28774111c27045f145baafb3c00520e3c73c5763597cd80c76'
+        },
+        json: true
+    };
 
-    var returnMessage = "Hello " + name + ", your passcode is " + passcode;
+    (0, _requestPromise2.default)(rpOptions).then(function (requestEvents) {
+        console.log('User has %d repos', requestEvents.length);
 
-    client.messages.create({
-        body: returnMessage,
-        to: twilioPhone,
-        from: '+61447082035'
-    }).then(function (msg) {
+        var pending = 0,
+            approved = 0,
+            declined = 0;
+
+        requestEvents.forEach(function (reqEvent) {
+            if (reqEvent.status === 'rejected') declined++;
+            if (reqEvent.status === 'approved') approved++;
+            if (reqEvent.status === 'pending') pending++;
+        });
+
+        var returnBody = "There is " + pending + " pending, " + approved + " approved and " + declined + " declined requests for leave";
+
         var response = {
             statusCode: 200,
-            body: 'worked'
+            body: returnBody
+        };
+        callback(null, response);
+    }).catch(function (err) {
+        var response = {
+            statusCode: 500,
+            body: (0, _stringify2.default)(err)
         };
         callback(null, response);
     });
@@ -122,19 +147,25 @@ function main(event, context, callback) {
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("uuid");
+module.exports = require("babel-runtime/core-js/json/stringify");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("aws-sdk");
+module.exports = require("uuid");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("twilio");
+module.exports = require("aws-sdk");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("request-promise");
 
 /***/ })
 /******/ ])));

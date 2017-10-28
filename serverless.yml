@@ -43,3 +43,10 @@ functions:
       - http:
           path: test
           method: get
+
+  leave:
+    handler: leave.main
+    events:
+      - http:
+          path: leave
+          method: post
