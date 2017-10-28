@@ -15,3 +15,33 @@ provider:
   runtime: nodejs6.10
   stage: prod
   region: ap-southeast-2
+
+functions:
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /notes
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
+  sms:
+    handler: sms.main
+    events:
+      - http:
+          path: webhook
+          method: post
+          authorizer: aws_iam
+
+  test:
+    handler: test.main
+    events:
+      - http:
+          path: testwebhook
+          method: post
+          authorizer: aws_iam
+  gettest:
+    handler: gettest.main
+    events:
+      - http:
+          path: test
+          method: get
+          authorizer: aws_iam

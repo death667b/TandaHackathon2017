@@ -1,20 +1,28 @@
 import uuid from "uuid";
 import AWS from "aws-sdk";
+import twilio from 'twilio';
 
 AWS.config.update({ region: "ap-southeast-2" });
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
+var accountID = 'AC1d5cf343f82ccd0c15e44feb15fa6dcc';
+var accountAuth = 'afa732887930ef637618e340063d2030';
+
+var client = new twilio(accountID, accountAuth);
 
 export function main(event, context, callback) {
-    // Request body is passed in as a JSON encoded string in 'event.body'
-    const data = JSON.parse(event.body);
+    eventBody = JSON.parse(event.body);
+    const twilioPhone = eventBody.payload.body.phone.replace(/ /g, "").replace("0", "+61");
+    const returnMessage = eventBody.payload.body.message || 'No Msg';
 
-    const params = {
-        Item: 'test test'
-    };
-    // Return status code 200 and the newly created item
-    const response = {
-        statusCode: 200,
-        body: JSON.stringify(params.Item)
-    };
-    callback(null, response);
+    client.messages.create({
+      body: returnMessage,
+      to: twilioPhone,
+      from: '+61447082035'
+    }).then( msg => {
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify(msg)
+        };
+        callback(null, response);
+    });
 }
