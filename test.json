@@ -1,0 +1,36 @@
+{
+    "hook_id": 38635,
+    "hook_key": "bcb859ff-6e6b-4994-bddb-97c3c3b6b0d5",
+    "hook_time": 1509157786,
+    "hook_signature": "X-Webhook-Signature",
+    "payload": {
+        "topic": "user.created",
+        "body": {
+            "id": 450382,
+            "name": "test",
+            "date_of_birth": null,
+            "employment_start_date": "2017-10-28",
+            "employee_id": null,
+            "passcode": "1858",
+            "user_levels": [
+                "employee"
+            ],
+            "department_ids": [],
+            "preferred_hours": 0.0,
+            "award_template_id": null,
+            "award_tag_ids": [],
+            "report_department_id": null,
+            "managed_department_ids": [],
+            "active": true,
+            "email": null,
+            "photo": null,
+            "phone": "1234 1234",
+            "normalised_phone": null,
+            "time_zone": "Australia/Brisbane",
+            "utc_offset": 36000,
+            "created_at": 1509157786,
+            "part_time_fixed_hours": 0.0,
+            "updated_at": 1509157786
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "uuid": "^3.1.0",
+    "twilio": "^3.9.1"
+  }
+}

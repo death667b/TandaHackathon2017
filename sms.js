@@ -10,9 +10,13 @@ var accountAuth = 'afa732887930ef637618e340063d2030';
 var client = new twilio(accountID, accountAuth);
 
 export function main(event, context, callback) {
-    eventBody = JSON.parse(event.body);
-    const twilioPhone = eventBody.payload.body.phone.replace(/ /g, "").replace("0", "+61");
-    const returnMessage = eventBody.payload.body.message || 'No Msg';
+    const eventBody = JSON.parse(event.body).payload.body;
+
+    const twilioPhone = eventBody.phone.replace(/ /g, "").replace("0", "+61");
+    const passcode = eventBody.passcode;
+    const name = eventBody.name;
+
+    const returnMessage = `Hello ${name}, your passcode is ${passcode}`;
 
     client.messages.create({
       body: returnMessage,
@@ -21,7 +25,7 @@ export function main(event, context, callback) {
     }).then( msg => {
         const response = {
             statusCode: 200,
-            body: JSON.stringify(msg)
+            body: 'worked'
         };
         callback(null, response);
     });

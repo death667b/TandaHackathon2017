@@ -29,7 +29,6 @@ functions:
       - http:
           path: webhook
           method: post
-          authorizer: aws_iam
 
   test:
     handler: test.main
@@ -37,11 +36,10 @@ functions:
       - http:
           path: testwebhook
           method: post
-          authorizer: aws_iam
+
   gettest:
     handler: gettest.main
     events:
       - http:
           path: test
           method: get
-          authorizer: aws_iam

@@ -1,0 +1,10 @@
+{
+  "name": "tandaHackathon2017",
+  "version": "1.0.0",
+  "description": "Packaged externals for tandaHackathon2017",
+  "private": true,
+  "dependencies": {
+    "uuid": "^3.1.0",
+    "twilio": "^3.9.1"
+  }
+}
